@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('mastermind App', () => {
+describe('mastermind-angular App', () => {
   let page: AppPage;
 
   beforeEach(() => {
