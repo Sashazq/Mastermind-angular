@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
 
   onGameStarted() {
     if (this.code) {
+      this.Cards = [];
       this.startDecode();
     }
   }

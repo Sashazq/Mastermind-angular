@@ -13,6 +13,6 @@ export class StartButtonComponent extends BaseButtonComponent {
 
   click() {
     this.onGameStarted.emit(true);
-    this.disabled = true;
+    // this.disabled = true;
   }
 }
