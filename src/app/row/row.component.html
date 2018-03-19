@@ -1,0 +1,8 @@
+<div class="row" *ngFor="let result of cards">
+  <app-card
+    *ngFor="let card of result.items"
+    [cardStyle]="card"
+  ></app-card>
+
+  <h3>Used values: {{result.values}}</h3>
+</div>
