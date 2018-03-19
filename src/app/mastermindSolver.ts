@@ -58,7 +58,6 @@ export class MastermindSolver {
       }
     }
 
-    console.log(tot);
     curCombNumber = temp[Math.floor(Math.random() * tot) + 1];
     temp = null;
     curComb = [];

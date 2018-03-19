@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {CardRow} from './card';
-import {TheSetService} from './services/theSet.service';
 import {MastermindSolver} from './mastermindSolver';
 
 @Component({
@@ -11,50 +10,36 @@ import {MastermindSolver} from './mastermindSolver';
 export class AppComponent implements OnInit {
   title = 'Mastermind game';
   Cards: Array<any>;
-  code: Array<number>;
+  code: number;
   theSet = [];
   isSolved = false;
+  tries = 0;
 
   onGameStarted() {
-    if (this.code) {
+    const splitted = this.convertToArrayInt(this.code);
+
+    if (this.isValidCode(splitted)) {
       this.Cards = [];
-      this.startDecode();
+      this.startDecode(splitted);
     }
   }
 
-  constructor(private theSetService: TheSetService) {
+  constructor() {
   }
 
   ngOnInit() {
   }
 
   isValidCode(value) {
-    const splitted = value.split('').map(val => +val);
-
-    if (splitted.length === 4 && splitted.filter(val => !isNaN(val) && val >= 1 && val <= 6)) {
-      return splitted;
-    }
-
-    return false;
+    return Array.isArray(value) && value.length === 4 && value.filter(val => !isNaN(val) && val >= 1 && val <= 6);
   }
 
-  onChangeCode(value) {
-    this.code = this.isValidCode(value);
+  convertToArrayInt(value) {
+    return value && value.split('').map(val => +val);
   }
 
-  startDecode() {
+  startDecode(settedCode: Array<number>) {
     this.Cards = [];
-    const getRand = () => this.theSetService.getRand(6, 1),
-      startGuess = [],
-      code = [];
-
-    for (let i = 4; i-- > 0;) {
-      startGuess.push(getRand());
-      code.push(getRand());
-    }
-
-    this.code = code.slice();
-    this.theSet = this.theSetService.generateTheSet();
 
     const places = 4;
     const numbers = 6;
@@ -65,7 +50,7 @@ export class AppComponent implements OnInit {
       tries++;
       guess = mm.getGuess().toString().split('').map(item => +item);
 
-      const res = this.getDecodeResult(code, guess);
+      const res = this.getDecodeResult(settedCode, guess);
 
       this.Cards.push(this.getCard(this.convertDecodeResult(res.matched, res.mismatched), guess));
 
@@ -80,6 +65,8 @@ export class AppComponent implements OnInit {
         break;
       }
     }
+
+    this.tries = tries;
   }
 
   convertDecodeResult(matched, mismatched) {

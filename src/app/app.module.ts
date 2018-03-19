@@ -9,9 +9,6 @@ import {CardComponent} from './row/card/card.component';
 import {BaseButtonComponent} from './baseButton/button.component';
 import {StartButtonComponent} from './startButton/startButton.component';
 
-import {TheSetService} from './services/theSet.service';
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,9 +21,7 @@ import {TheSetService} from './services/theSet.service';
     BrowserModule,
     FormsModule
   ],
-  providers: [
-    TheSetService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
