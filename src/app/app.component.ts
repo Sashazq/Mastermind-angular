@@ -11,9 +11,11 @@ export class AppComponent implements OnInit {
   title = 'Mastermind game';
   Cards: Array<any>;
   code: number;
-  theSet = [];
   isSolved = false;
   tries = 0;
+
+  constructor() {
+  }
 
   onGameStarted() {
     const splitted = this.convertToArrayInt(this.code);
@@ -24,9 +26,6 @@ export class AppComponent implements OnInit {
     }
   }
 
-  constructor() {
-  }
-
   ngOnInit() {
   }
 
@@ -35,7 +34,7 @@ export class AppComponent implements OnInit {
   }
 
   convertToArrayInt(value) {
-    return value && value.split('').map(val => +val);
+    return value && value.toString().split('').map(val => +val);
   }
 
   startDecode(settedCode: Array<number>) {
@@ -43,12 +42,12 @@ export class AppComponent implements OnInit {
 
     const places = 4;
     const numbers = 6;
-    const mm = new MastermindSolver(places, numbers);
+    const masterMind = new MastermindSolver(places, numbers);
     let guess, tries = 0, blackPins, whitePins;
 
     while (true) {
       tries++;
-      guess = mm.getGuess().toString().split('').map(item => +item);
+      guess = this.convertToArrayInt(masterMind.getGuess());
 
       const res = this.getDecodeResult(settedCode, guess);
 
@@ -57,10 +56,10 @@ export class AppComponent implements OnInit {
       blackPins = res.matched;
       whitePins = res.mismatched;
 
-      mm.feedPins(blackPins, whitePins);
+      masterMind.feedPins(blackPins, whitePins);
 
-      if (mm.status().state === 'solved' || mm.status().state === 'failed') {
-        this.isSolved = mm.status().state === 'solved';
+      if (masterMind.status().state === 'solved' || masterMind.status().state === 'failed') {
+        this.isSolved = masterMind.status().state === 'solved';
 
         break;
       }
@@ -72,7 +71,7 @@ export class AppComponent implements OnInit {
   convertDecodeResult(matched, mismatched) {
     const convertedResult = [];
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 4; i-- > 0;) {
       if (matched) {
         convertedResult.push(1);
         matched--;
@@ -111,7 +110,7 @@ export class AppComponent implements OnInit {
 
 
   getDecodeResult(code: Array<Number>, decode: Array<Number>) {
-    let _code = code.slice(), _decode = decode.slice();
+    const _code = code.slice(), _decode = decode.slice();
     const isMatch = (val, index) => val === _code[index],
       matches = _decode.filter(isMatch),
       missed = _decode.filter((val, index) => !isMatch(val, index)),

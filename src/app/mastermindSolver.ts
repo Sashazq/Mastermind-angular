@@ -139,22 +139,11 @@ export class MastermindSolver {
     if (this.possible === 0) {
       this.state = 'failed';
     }
-
-    return this.status();
   }
 
   status() {
-    const possibilities = (this.state === 'initial' || this.currentTry <= 1) ? this.maxCombs : this.possible;
-    const successProbability = Math.floor(10000 / possibilities + 0.5) / 10000;
-    const status = {
-      state: this.state,
-      possibilities: 1,
-      successProbability: 1
+    return {
+      state: this.state
     };
-    if (this.state !== 'solved' && this.state !== 'failed') {
-      status.possibilities = possibilities;
-      status.successProbability = successProbability;
-    }
-    return status;
   }
 }
