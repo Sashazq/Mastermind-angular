@@ -15,6 +15,7 @@
             class="validate center-align"
             maxlength="4"
             [(ngModel)]="code"
+            (change)="onCodeChange($event)"
             name="something"
           >
         </div>

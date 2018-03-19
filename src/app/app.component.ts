@@ -20,13 +20,18 @@ export class AppComponent implements OnInit {
   onGameStarted() {
     const splitted = this.convertToArrayInt(this.code);
 
+    this.Cards = [];
+
     if (this.isValidCode(splitted)) {
-      this.Cards = [];
       this.startDecode(splitted);
     }
   }
 
   ngOnInit() {
+  }
+
+  onCodeChange(val) {
+    this.isSolved = Boolean(this.isValidCode(this.convertToArrayInt(val)));
   }
 
   isValidCode(value) {
